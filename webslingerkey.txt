@@ -1,7 +1,1 @@
-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
-webslinger gemini 2.5
-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
 
-API_KEY = "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"
-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 (cyber 806)
-MODEL = "google/gemini-2.0-flash-exp:free"
