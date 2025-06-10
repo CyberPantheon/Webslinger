@@ -1,5 +1,5 @@
 # Webslinger
-**Webslinger** is a custom-built, AI-integrated browser engineered from the ground up for professional bug bounty hunters, red teamers, and offensive security researchers. 
+**Webslinger** is a custom-built, AI-integrated browser engineered from the ground up for professional bug bounty hunters, red teamers, and offensive security researchers [ comments have been made to every file and code to aid your understanding, because i built it in stacks so i can keep track of the whole codebase from "main" . 
 ---
 
 ## 🧠 Webslinger: The Autonomous Bug Bounty Browser
