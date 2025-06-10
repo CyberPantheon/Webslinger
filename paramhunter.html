@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; img-src 'self' data: https://cdnjs.cloudflare.com;">
+    <title>ParamHunter</title>
+    <link rel="stylesheet" href="paramhunter.css">
+     <link rel="stylesheet" href="./fonts/fontawesome/css/all.min.css">
+</head>
+<body>
+    <div class="titlebar">
+        <div class="app-title">
+            <i class="fas fa-search-location"></i> <span>ParamHunter</span>
+        </div>
+        <div class="window-controls">
+            <button class="window-btn minimize" id="minimize-btn" title="Minimize"><i class="fas fa-minus"></i></button>
+            <button class="window-btn close" id="close-btn" title="Close"><i class="fas fa-times"></i></button>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <aside class="control-panel">
+            <h2><i class="fas fa-cogs"></i> Configuration</h2>
+
+            <section class="config-section">
+                <label for="target-urls">Target URL(s) (one per line):</label>
+                <textarea id="target-urls" rows="4" placeholder="https://example.com\nhttp://test.com/path"></textarea>
+            </section>
+
+            <section class="config-section">
+                <label>Hunting Options:</label>
+                 <div class="checkbox-options">
+                     <label class="checkbox-label">
+                         <input type="checkbox" id="crawl-html" checked> Crawl HTML Links
+                     </label>
+                     <label class="checkbox-label">
+                         <input type="checkbox" id="crawl-js" checked> Analyze JavaScript Files
+                     </label>
+                     <label class="checkbox-label">
+                         <input type="checkbox" id="use-wayback" checked> Use Wayback URLs (via API/External Tool - Requires setup)
+                     </label>
+                     <label class="checkbox-label">
+                         <input type="checkbox" id="check-forms" checked> Extract Form Parameters (POST)
+                     </label>
+                      <label class="checkbox-label">
+                         <input type="checkbox" id="include-headers-cookies" title="Requires proxy integration or browser context (Advanced)"> Include Headers/Cookies
+                     </label>
+                 </div>
+            </section>
+
+            <section class="config-section">
+                <label>Hunter Settings:</label>
+                <div class="settings-grid">
+                    <div>
+                        <label for="threads">Threads:</label>
+                        <input type="number" id="threads" min="1" max="20" value="5" title="Concurrent requests/tasks">
+                    </div>
+                    <div>
+                        <label for="timeout">Timeout (ms):</label>
+                        <input type="number" id="timeout" min="1000" max="60000" value="10000" title="Request timeout">
+                    </div>
+                    <div>
+                        <label for="crawl-depth">Crawl Depth:</label>
+                        <input type="number" id="crawl-depth" min="0" max="5" value="2" title="How many link levels deep to crawl (0 = only initial URLs)">
+                    </div>
+                 </div>
+            </section>
+
+             <section class="config-section">
+                 <label for="headers-input">Custom Headers (one per line):</label>
+                 <textarea id="headers-input" rows="2" placeholder="Header-Name: HeaderValue"></textarea>
+             </section>
+             <section class="config-section">
+                 <label for="cookies-input">Custom Cookies (semicolon separated):</label>
+                 <textarea id="cookies-input" rows="1" placeholder="cookie1=value1; cookie2=value2"></textarea>
+             </section>
+
+
+            <section class="action-buttons-section">
+                 <button id="start-hunt-btn" class="action-btn primary"><i class="fas fa-search"></i> Start Hunt</button>
+                 <button id="stop-hunt-btn" class="action-btn danger" disabled><i class="fas fa-stop"></i> Stop Hunt</button>
+                 <button id="clear-btn" class="action-btn secondary"><i class="fas fa-trash-alt"></i> Clear All</button>
+                 <button id="export-btn" class="action-btn secondary" disabled><i class="fas fa-file-export"></i> Export Results</button>
+             </section>
+        </aside>
+
+        <main class="main-content">
+            <div id="loading-overlay" class="loading-overlay" style="display: none;">
+                <div class="spinner"></div>
+                <p id="loading-text">Loading...</p>
+            </div>
+
+            <div class="stats-bar">
+                <div><i class="fas fa-link"></i> URLs Found: <span id="urls-found">0</span></div>
+                <div><i class="fas fa-tasks"></i> URLs Processed: <span id="urls-processed">0</span></div>
+                <div><i class="fas fa-cogs"></i> Params Found: <span id="params-found">0</span></div>
+                <div><i class="fas fa-shield-alt"></i> Potential Vulns Tagged: <span id="vulns-tagged">0</span></div>
+                <div><i class="fas fa-stopwatch"></i> Time: <span id="elapsed-time">00:00</span></div>
+            </div>
+
+             <div class="progress-area">
+                 <div class="progress-bar-container">
+                     <div class="progress-bar" id="progress-bar"></div>
+                 </div>
+                 <div id="progress-text" class="progress-percentage">0%</div>
+             </div>
+
+
+            <nav class="tab-navigation">
+                <button class="tab-btn active" data-tab="results-tab"><i class="fas fa-list-ul"></i> Results</button>
+                <button class="tab-btn" data-tab="log-tab"><i class="fas fa-terminal"></i> Log</button>
+                <div class="filter-controls">
+                    <select id="filter-vuln-type">
+                         <option value="">All Potential Vulns</option>
+                         <option value="XSS">XSS</option>
+                         <option value="SQLi">SQLi</option>
+                         <option value="SSRF">SSRF</option>
+                         <option value="LFI">LFI</option>
+                         <option value="Open Redirect">Open Redirect</option>
+                         <option value="IDOR">IDOR</option>
+                         <option value="Other">Other</option>
+                         </select>
+                    <input type="text" id="filter-results" placeholder="Filter URL/Param...">
+                </div>
+            </nav>
+
+            <div class="tab-content-area">
+                <div class="tab-pane active" id="results-tab">
+                     <div class="scrollable-content table-container">
+                         <table class="results-table">
+                             <thead>
+                                 <tr>
+                                     <th>ID</th>
+                                     <th>Found URL</th>
+                                     <th>Parameter Name</th>
+                                     <th>Source</th>
+                                     <th>Potential Vuln Tags</th>
+                                     <th>Timestamp</th>
+                                 </tr>
+                             </thead>
+                             <tbody id="results-body">
+                                 <tr><td colspan="6" class="placeholder">No parameters found yet. Start a hunt.</td></tr>
+                             </tbody>
+                         </table>
+                     </div>
+                </div>
+                <div class="tab-pane" id="log-tab">
+                     <div class="scrollable-content log-container" id="log-content">
+                     </div>
+                 </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="paramhunter.js"></script> </body>
+</html>

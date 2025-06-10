@@ -1,0 +1,211 @@
+/* --- Basic Variables --- */
+:root {
+  --bg-dark: #1e1e2e;
+  --bg-panel: #27293d;
+  --primary: #89b4fa;
+  --text-primary: #cad3f5;
+  --text-secondary: #a6adc8;
+  --border-color: #494d64;
+  --success: #a6e3a1;
+  --error: #f38ba8;
+  --warning: #f9e2af;
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  --radius-sm: 4px;
+  --radius-lg: 8px; /* Matches main window style */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden; /* Prevent body scrollbars */
+  background: linear-gradient(135deg, var(--bg-dark), #303446);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-lg); /* Apply curved edges */
+  position: relative; /* Needed for overlay */
+}
+
+/* --- Titlebar --- */
+.titlebar {
+  height: 36px;
+  background-color: var(--bg-panel);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px 0 15px;
+  flex-shrink: 0;
+  -webkit-app-region: drag; /* Allow dragging */
+}
+
+.app-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.app-title i {
+  color: var(--primary);
+  font-size: 14px;
+}
+
+.status-indicator {
+    font-size: 12px;
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    margin: 0 auto; /* Center */
+    color: var(--text-secondary);
+    max-width: 60%; /* Prevent overly long messages */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+.status-indicator.loading {
+    background-color: rgba(249, 226, 175, 0.1); /* Warning bg */
+    color: var(--warning);
+}
+.status-indicator.ready {
+     background-color: rgba(166, 227, 161, 0.1); /* Success bg */
+    color: var(--success);
+}
+.status-indicator.error {
+     background-color: rgba(243, 139, 168, 0.1); /* Error bg */
+    color: var(--error);
+}
+.status-indicator:hover {
+  transform: scale(1.1);
+  box-shadow: var(--shadow-md);
+}
+
+.window-controls {
+  display: flex;
+  gap: 5px;
+  -webkit-app-region: no-drag; /* Prevent dragging */
+}
+
+.window-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background-color: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.window-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.window-btn.minimize:hover { color: var(--warning); }
+.window-btn.close:hover { background-color: var(--error); color: var(--bg-dark); }
+.window-btn i { font-size: 12px; }
+
+
+/* --- Loading Overlay --- */
+.loading-overlay {
+    position: absolute;
+    top: 37px; /* Below title bar */
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(30, 30, 46, 0.9); /* Semi-transparent dark bg */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10; /* Ensure it's above the webview initially */
+    color: var(--text-secondary);
+    transition: opacity 0.3s ease;
+    opacity: 1;
+    pointer-events: none; /* Allow clicks through when hidden */
+}
+.loading-overlay.hidden {
+    opacity: 0;
+}
+
+/* Simple Spinner */
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(166, 173, 200, 0.3); /* Light border */
+    border-top-color: var(--primary); /* Blue top border */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* --- Webview Container --- */
+webview {
+  flex-grow: 1; /* Take remaining space */
+  border: none; /* Remove default border */
+  width: 100%;
+  height: calc(100vh - 37px); /* Full height minus title bar */
+  /* Start with background color, webview content will overlay */
+  background-color: var(--bg-dark);
+}
+
+/* Placeholder styles for inside webview on error */
+.webview-message {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 20px;
+  font-family: var(--font-sans);
+  text-align: center;
+  background-color: var(--bg-dark); /* Match body bg */
+  color: var(--text-secondary);
+}
+.webview-message h2 {
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+.webview-message.error h2 {
+  color: var(--error);
+}
+.webview-message p {
+    line-height: 1.6;
+}
+.webview-message code {
+    background-color: var(--bg-panel);
+    padding: 2px 5px;
+    border-radius: var(--radius-sm);
+    font-family: monospace;
+    color: var(--primary);
+    margin: 0 3px;
+    word-break: break-all;
+}
+.webview-message button {
+    margin-top: 15px;
+    padding: 8px 15px;
+    background-color: var(--primary);
+    color: var(--bg-dark);
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.webview-message button:hover {
+    background-color: lighten(var(--primary), 10%);
+}

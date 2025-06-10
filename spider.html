@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; img-src 'self' data: https://cdnjs.cloudflare.com;">
+  <title>Spiders</title>
+  <link rel="stylesheet" href="spider.css">
+  <link rel="stylesheet" href="./fonts/fontawesome/css/all.min.css">
+</head>
+<body>
+  <div class="titlebar">
+    <div class="app-title">
+      <i class="fas fa-spider"></i>
+      <span>Spiders</span>
+    </div>
+    <div class="window-controls">
+      <button class="window-btn minimize" id="minimize-btn" title="Minimize"><i class="fas fa-minus"></i></button>
+      <button class="window-btn maximize" id="maximize-btn" title="Maximize/Restore"><i class="fas fa-expand"></i></button>
+      <button class="window-btn close" id="close-btn" title="Close"><i class="fas fa-times"></i></button>
+    </div>
+  </div>
+  <div class="app-container spider-container">
+    <aside class="spider-panel" aria-label="Spider Tools Sidebar">
+      <div class="sidebar-header">
+        <h2><i class="fas fa-network-wired"></i> Spider Tools</h2>
+      </div>
+      <h3>Available Spiders</h3>
+      <div class="spider-toggles">
+        <label class="spider-toggle active" title="Cross-Site Scripting Spider">
+          <input type="checkbox" id="xss-spider-toggle" checked>
+          <i class="fas fa-bug"></i> XSS Spider
+        </label>
+        <label class="spider-toggle" title="SQL Injection Spider">
+          <input type="checkbox" id="sqli-spider-toggle">
+          <i class="fas fa-database"></i> SQLi Spider
+        </label>
+        <label class="spider-toggle" title="Insecure Direct Object Reference Spider">
+          <input type="checkbox" id="idor-spider-toggle">
+          <i class="fas fa-key"></i> IDOR Spider
+        </label>
+        <!-- <label class="spider-toggle disabled" title="Local File Inclusion Spider (Coming Soon)">
+          <input type="checkbox" id="lfi-spider-toggle" disabled>
+          <i class="fas fa-file-code"></i> LFI Spider
+        </label> -->
+        <label class="spider-toggle" title="Open Redirect Spider">
+          <input type="checkbox" id="openredirect-spider-toggle">
+          <i class="fas fa-external-link-alt"></i> Open Redirect Spider
+        </label>
+        <label class="spider-toggle" title="Cross-Site Request Forgery Spider">
+          <input type="checkbox" id="csrf-spider-toggle">
+          <i class="fas fa-shield-alt"></i> CSRF Spider
+        </label>
+        <label class="spider-toggle" title="Clickjacking Spider">
+          <input type="checkbox" id="clickjacking-spider-toggle">
+          <i class="fas fa-window-restore"></i> Clickjacking Spider
+        </label>
+        <label class="spider-toggle" title="CORS Spider">
+          <input type="checkbox" id="cors-spider-toggle">
+          <i class="fas fa-globe"></i> CORS Spider
+        </label>
+        <label class="spider-toggle" title="Subdomain Takeover Spider">
+          <input type="checkbox" id="subdomain-spider-toggle">
+          <i class="fas fa-link"></i> Subdomain Takeover Spider
+        </label>
+        <label class="spider-toggle" title="WordPress Recon Spider">
+          <input type="checkbox" id="wordpressrecon-spider-toggle">
+          <i class="fab fa-wordpress"></i> WordPress Recon Spider
+        </label>
+      </div>
+      <div class="sidebar-footer">
+        <span>Spider Tool v1.0</span>
+        <a href="#" tabindex="0" aria-label="About Spider Tool"><i class="fas fa-info-circle"></i></a>
+      </div>
+    </aside>
+    <main class="main-content spiders-main">
+      <div class="main-content-wrapper">
+        <div class="spider-settings" id="xss-spider-settings">
+          <form id="xss-spider-form">
+            <div class="settings-row">
+              <label for="xss-start-url">Start URL:</label>
+              <input type="text" id="xss-start-url" placeholder="https://example.com" required>
+              <button type="submit" id="xss-start-btn" class="start-btn"><i class="fas fa-play"></i> Start</button>
+              <button type="button" id="xss-stop-btn" class="stop-btn" disabled><i class="fas fa-stop"></i> Stop</button>
+            </div>
+            <div class="settings-row">
+              <label for="xss-depth">Crawl Depth:</label>
+              <input type="number" id="xss-depth" min="1" max="10" value="3">
+              <label><input type="checkbox" id="xss-same-domain" checked> Same Domain Only</label>
+              <label><input type="checkbox" id="xss-follow-forms" checked> Follow Forms</label>
+              <label><input type="checkbox" id="xss-dom-xss"> DOM XSS</label>
+              <label><input type="checkbox" id="xss-smart-mode" checked> Smart Mode</label>
+            </div>
+            <div class="settings-row">
+              <label for="xss-payload-set">Payload Set:</label>
+              <select id="xss-payload-set">
+                <option value="default">Default (xss.txt)</option>
+                <!-- More payload sets can be added here -->
+              </select>
+              <label for="xss-threads">Threads:</label>
+              <input type="number" id="xss-threads" min="1" max="10" value="3">
+            </div>
+          </form>
+        </div>
+        <div class="spider-settings" id="sqli-spider-settings" style="display:none;">
+          <form id="sqli-spider-form">
+            <div class="settings-row">
+              <label for="sqli-start-url">Start URL:</label>
+              <input type="text" id="sqli-start-url" placeholder="https://example.com" required>
+              <button type="submit" id="sqli-start-btn" class="start-btn"><i class="fas fa-play"></i> Start</button>
+              <button type="button" id="sqli-stop-btn" class="stop-btn" disabled><i class="fas fa-stop"></i> Stop</button>
+            </div>
+            <div class="settings-row">
+              <label for="sqli-payload-set">Payload Set:</label>
+              <select id="sqli-payload-set">
+                <option value="default">Default (sqli.txt)</option>
+              </select>
+              <input type="file" id="sqli-payload-file" style="display:none;">
+              <button type="button" id="sqli-payload-browse">Browse...</button>
+              <label for="sqli-threads">Threads:</label>
+              <input type="number" id="sqli-threads" min="1" max="10" value="3">
+            </div>
+            <div class="settings-row">
+              <label>Detection Techniques:</label>
+              <label><input type="checkbox" id="sqli-error-based" checked> Error-based</label>
+              <label><input type="checkbox" id="sqli-boolean-based" checked> Boolean-based</label>
+              <label><input type="checkbox" id="sqli-time-based" checked> Time-based</label>
+              <label><input type="checkbox" id="sqli-union-based"> UNION-based</label>
+              <label><input type="checkbox" id="sqli-oob"> OOB</label>
+              <label><input type="checkbox" id="sqli-header-injection"> Header Injection</label>
+              <label><input type="checkbox" id="sqli-advanced-mode"> Advanced Mode</label>
+            </div>
+          </form>
+        </div>
+        <div class="spider-settings" id="idor-spider-settings" style="display:none;">
+          <form id="idor-spider-form">
+            <div class="settings-row">
+              <label for="idor-start-url">Start URL:</label>
+              <input type="text" id="idor-start-url" placeholder="https://example.com" required>
+              <button type="submit" id="idor-start-btn" class="start-btn"><i class="fas fa-play"></i> Start</button>
+              <button type="button" id="idor-stop-btn" class="stop-btn" disabled><i class="fas fa-stop"></i> Stop</button>
+            </div>
+            <div class="settings-row">
+              <label for="idor-depth">Crawl Depth:</label>
+              <input type="number" id="idor-depth" min="1" max="10" value="3">
+              <label><input type="checkbox" id="idor-same-domain" checked> Same Domain Only</label>
+              <label><input type="checkbox" id="idor-fuzz-params" checked> Fuzz Parameters</label>
+              <label><input type="checkbox" id="idor-enum-subdomains"> Subdomain Enum</label>
+              <label><input type="checkbox" id="idor-smart-mode" checked> Smart Mode</label>
+            </div>
+            <div class="settings-row">
+              <label for="idor-threads">Threads:</label>
+              <input type="number" id="idor-threads" min="1" max="10" value="3">
+            </div>
+          </form>
+        </div>
+        <div class="spider-settings" id="openredirect-spider-settings" style="display:none;">
+          <form id="openredirect-spider-form">
+            <div class="settings-row">
+              <label for="openredirect-start-urls">Start URLs (one per line):</label>
+              <textarea id="openredirect-start-urls" rows="3" placeholder="https://example.com/page1&#10;https://example.com/page2" required style="min-width:260px;min-height:60px;"></textarea>
+              <button type="submit" id="openredirect-start-btn" class="start-btn"><i class="fas fa-play"></i> Start</button>
+              <button type="button" id="openredirect-stop-btn" class="stop-btn" disabled><i class="fas fa-stop"></i> Stop</button>
+            </div>
+            <div class="settings-row">
+              <label for="openredirect-depth">Crawl Depth:</label>
+              <input type="number" id="openredirect-depth" min="1" max="10" value="3">
+              <label><input type="checkbox" id="openredirect-same-domain" checked> Same Domain Only</label>
+              <label><input type="checkbox" id="openredirect-smart-mode" checked> Smart Mode</label>
+              <label for="openredirect-threads">Threads:</label>
+              <input type="number" id="openredirect-threads" min="1" max="10" value="3">
+            </div>
+          </form>
+        </div>
+        <div class="spider-settings" id="csrf-spider-settings" style="display:none;">
+          <form id="csrf-spider-form">
+            <div class="settings-row">
+              <label for="csrf-start-urls">Start URLs (one per line):</label>
+              <textarea id="csrf-start-urls" rows="3" placeholder="https://example.com/page1&#10;https://example.com/page2" required style="min-width:260px;min-height:60px;"></textarea>
+              <button type="submit" id="csrf-start-btn" class="start-btn"><i class="fas fa-play"></i> Start</button>
+              <button type="button" id="csrf-stop-btn" class="stop-btn" disabled><i class="fas fa-stop"></i> Stop</button>
+            </div>
+            <div class="settings-row">
+              <label for="csrf-depth">Crawl Depth:</label>
+              <input type="number" id="csrf-depth" min="1" max="10" value="3">
+              <label><input type="checkbox" id="csrf-same-domain" checked> Same Domain Only</label>
+              <label><input type="checkbox" id="csrf-smart-mode" checked> Smart Mode</label>
+              <label for="csrf-threads">Threads:</label>
+              <input type="number" id="csrf-threads" min="1" max="10" value="3">
+            </div>
+          </form>
+        </div>
+        <div class="spider-settings" id="clickjacking-spider-settings" style="display:none;">
+          <form id="clickjacking-spider-form">
+            <div class="settings-row">
+              <label for="clickjacking-start-urls">Start URLs (one per line):</label>
+              <textarea id="clickjacking-start-urls" rows="3" placeholder="https://example.com/page1&#10;https://example.com/page2" required style="min-width:260px;min-height:60px;"></textarea>
+              <button type="submit" id="clickjacking-start-btn" class="start-btn"><i class="fas fa-play"></i> Start</button>
+              <button type="button" id="clickjacking-stop-btn" class="stop-btn" disabled><i class="fas fa-stop"></i> Stop</button>
+            </div>
+            <div class="settings-row">
+              <label for="clickjacking-depth">Crawl Depth:</label>
+              <input type="number" id="clickjacking-depth" min="1" max="10" value="1">
+              <label for="clickjacking-mode">Iframe Mode:</label>
+              <select id="clickjacking-mode">
+                <option value="strict">Strict</option>
+                <option value="permissive">Permissive</option>
+              </select>
+              <label for="clickjacking-threads">Threads:</label>
+              <input type="number" id="clickjacking-threads" min="1" max="10" value="2">
+            </div>
+          </form>
+        </div>
+        <div class="spider-settings" id="cors-spider-settings" style="display:none;">
+          <form id="cors-spider-form">
+            <div class="settings-row">
+              <label for="cors-start-urls">Start URLs (one per line):</label>
+              <textarea id="cors-start-urls" rows="3" placeholder="https://example.com/api&#10;https://example.com/account" required style="min-width:260px;min-height:60px;"></textarea>
+              <button type="submit" id="cors-start-btn" class="start-btn"><i class="fas fa-play"></i> Start</button>
+              <button type="button" id="cors-stop-btn" class="stop-btn" disabled><i class="fas fa-stop"></i> Stop</button>
+            </div>
+            <div class="settings-row">
+              <label for="cors-scan-mode">Scan Mode:</label>
+              <select id="cors-scan-mode">
+                <option value="aggressive">Aggressive</option>
+                <option value="passive">Passive</option>
+              </select>
+              <label for="cors-threads">Threads:</label>
+              <input type="number" id="cors-threads" min="1" max="10" value="2">
+            </div>
+          </form>
+        </div>
+        <div class="spider-settings" id="subdomain-spider-settings" style="display:none;">
+          <form id="subdomain-spider-form">
+            <div class="settings-row">
+              <label for="subdomain-start-urls">Start URLs (one per line):</label>
+              <textarea id="subdomain-start-urls" rows="3" placeholder="https://example.com&#10;https://foo.example.com" required style="min-width:260px;min-height:60px;"></textarea>
+              <button type="submit" id="subdomain-start-btn" class="start-btn"><i class="fas fa-play"></i> Start</button>
+              <button type="button" id="subdomain-stop-btn" class="stop-btn" disabled><i class="fas fa-stop"></i> Stop</button>
+            </div>
+            <div class="settings-row">
+              <label for="subdomain-scan-mode">Scan Mode:</label>
+              <select id="subdomain-scan-mode">
+                <option value="active">Active</option>
+                <option value="passive">Passive</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <!-- WordPress Recon Spider settings -->
+        <div class="spider-settings" id="wordpressrecon-spider-settings" style="display:none;">
+          <form id="wordpressrecon-spider-form">
+            <div class="settings-row">
+              <label for="wordpressrecon-start-urls">Start URLs (one per line):</label>
+              <textarea id="wordpressrecon-start-urls" rows="3" placeholder="https://example.com&#10;https://foo.example.com" required style="min-width:260px;min-height:60px;"></textarea>
+              <button type="submit" id="wordpressrecon-start-btn" class="start-btn"><i class="fas fa-play"></i> Start</button>
+              <button type="button" id="wordpressrecon-stop-btn" class="stop-btn" disabled><i class="fas fa-stop"></i> Stop</button>
+            </div>
+            <div class="settings-row">
+              <label><input type="checkbox" id="wordpressrecon-enum-plugins" checked> Enumerate Plugins</label>
+              <label><input type="checkbox" id="wordpressrecon-enum-themes" checked> Enumerate Themes</label>
+              <label><input type="checkbox" id="wordpressrecon-enum-users" checked> Enumerate Users</label>
+              <label><input type="checkbox" id="wordpressrecon-deep-scan" checked> Deep Scan</label>
+              <label for="wordpressrecon-threads">Threads:</label>
+              <input type="number" id="wordpressrecon-threads" min="1" max="10" value="3">
+            </div>
+          </form>
+        </div>
+        <nav class="tab-navigation spiders-tabs">
+          <div class="tab-container" id="spider-tab-container">
+            <button class="tab-btn active" data-tab="xss-spider-tab"><i class="fas fa-bug"></i> XSS Spider</button>
+            <button class="tab-btn" data-tab="sqli-spider-tab"><i class="fas fa-database"></i> SQLi Spider</button>
+            <button class="tab-btn" data-tab="idor-spider-tab"><i class="fas fa-key"></i> IDOR Spider</button>
+            <button class="tab-btn" data-tab="openredirect-spider-tab"><i class="fas fa-external-link-alt"></i> Open Redirect Spider</button>
+            <button class="tab-btn" data-tab="csrf-spider-tab"><i class="fas fa-shield-alt"></i> CSRF Spider</button>
+            <button class="tab-btn" data-tab="clickjacking-spider-tab"><i class="fas fa-window-restore"></i> Clickjacking Spider</button>
+            <button class="tab-btn" data-tab="cors-spider-tab"><i class="fas fa-globe"></i> CORS Spider</button>
+            <button class="tab-btn" data-tab="subdomain-spider-tab"><i class="fas fa-link"></i> Subdomain Takeover Spider</button>
+            <!-- WordPress Recon Spider tab -->
+            <button class="tab-btn" data-tab="wordpressrecon-spider-tab"><i class="fab fa-wordpress"></i> WordPress Recon Spider</button>
+          </div>
+        </nav>
+        <div class="tab-content-area" id="spider-tab-content-area">
+          <div class="tab-pane active" id="xss-spider-tab">
+            <div class="spider-status-bar sticky-status-bar">
+              <span id="xss-status">Status: <span class="status-idle">Idle</span></span>
+              <span id="xss-progress">Progress: <span>0</span></span>
+              <span id="xss-found">Vulns Found: <span>0</span></span>
+            </div>
+            <div class="spider-log-findings">
+              <div class="spider-log-container custom-scroll">
+                <div class="spider-log-content" id="xss-spider-log">
+                  <div class="log-entry log-info">[INFO] XSS Spider ready. Enter a URL and start hunting!</div>
+                </div>
+              </div>
+              <div class="spider-findings-container custom-scroll">
+                <table class="spider-findings-table">
+                  <thead>
+                    <tr>
+                      <th>Type</th>
+                      <th>Endpoint</th>
+                      <th>Parameter</th>
+                      <th>Payload</th>
+                      <th>Status</th>
+                      <th>Evidence</th>
+                    </tr>
+                  </thead>
+                  <tbody id="xss-findings-body">
+                    <tr><td colspan="6" class="placeholder">No findings yet.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" id="sqli-spider-tab">
+            <div class="spider-status-bar sticky-status-bar">
+              <span id="sqli-status">Status: <span class="status-idle">Idle</span></span>
+              <span id="sqli-progress">Progress: <span>0</span></span>
+              <span id="sqli-found">Vulns Found: <span>0</span></span>
+            </div>
+            <div class="spider-log-findings">
+              <div class="spider-log-container custom-scroll">
+                <div class="spider-log-content" id="sqli-spider-log">
+                  <div class="log-entry log-info">[INFO] SQLi Spider ready. Enter a URL and start hunting!</div>
+                </div>
+              </div>
+              <div class="spider-findings-container custom-scroll">
+                <table class="spider-findings-table">
+                  <thead>
+                    <tr>
+                      <th>Type</th>
+                      <th>Endpoint</th>
+                      <th>Parameter</th>
+                      <th>Payload</th>
+                      <th>Technique</th>
+                      <th>Status</th>
+                      <th>Evidence</th>
+                    </tr>
+                  </thead>
+                  <tbody id="sqli-findings-body">
+                    <tr><td colspan="7" class="placeholder">No findings yet.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" id="idor-spider-tab">
+            <div class="spider-status-bar sticky-status-bar">
+              <span id="idor-status">Status: <span class="status-idle">Idle</span></span>
+              <span id="idor-progress">Progress: <span>0</span></span>
+              <span id="idor-found">Vulns Found: <span>0</span></span>
+            </div>
+            <div class="spider-log-findings">
+              <div class="spider-log-container custom-scroll">
+                <div class="spider-log-content" id="idor-spider-log">
+                  <div class="log-entry log-info">[INFO] IDOR Spider ready. Enter a URL and start hunting!</div>
+                </div>
+              </div>
+              <div class="spider-findings-container custom-scroll">
+                <table class="spider-findings-table">
+                  <thead>
+                    <tr>
+                      <th>Type</th>
+                      <th>Endpoint</th>
+                      <th>Parameter</th>
+                      <th>Payload</th>
+                      <th>Status</th>
+                      <th>Evidence</th>
+                    </tr>
+                  </thead>
+                  <tbody id="idor-findings-body">
+                    <tr><td colspan="6" class="placeholder">No findings yet.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" id="openredirect-spider-tab">
+            <div class="spider-status-bar sticky-status-bar">
+              <span id="openredirect-status">Status: <span class="status-idle">Idle</span></span>
+              <span id="openredirect-progress">Progress: <span>0</span></span>
+              <span id="openredirect-found">Vulns Found: <span>0</span></span>
+            </div>
+            <div class="spider-log-findings">
+              <div class="spider-log-container custom-scroll">
+                <div class="spider-log-content" id="openredirect-spider-log">
+                  <div class="log-entry log-info">[INFO] Open Redirect Spider ready. Enter URLs and start hunting!</div>
+                </div>
+              </div>
+              <div class="spider-findings-container custom-scroll">
+                <table class="spider-findings-table">
+                  <thead>
+                    <tr>
+                      <th>Type</th>
+                      <th>Endpoint</th>
+                      <th>Parameter</th>
+                      <th>Payload</th>
+                      <th>Status</th>
+                      <th>Evidence</th>
+                    </tr>
+                  </thead>
+                  <tbody id="openredirect-findings-body">
+                    <tr><td colspan="6" class="placeholder">No findings yet.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" id="csrf-spider-tab">
+            <div class="spider-status-bar sticky-status-bar">
+              <span id="csrf-status">Status: <span class="status-idle">Idle</span></span>
+              <span id="csrf-progress">Progress: <span>0</span></span>
+              <span id="csrf-found">Vulns Found: <span>0</span></span>
+            </div>
+            <div class="spider-log-findings">
+              <div class="spider-log-container custom-scroll">
+                <div class="spider-log-content" id="csrf-spider-log">
+                  <div class="log-entry log-info">[INFO] CSRF Spider ready. Enter URLs and start hunting!</div>
+                </div>
+              </div>
+              <div class="spider-findings-container custom-scroll">
+                <table class="spider-findings-table">
+                  <thead>
+                    <tr>
+                      <th>Type</th>
+                      <th>Endpoint</th>
+                      <th>Form Action</th>
+                      <th>Token Field</th>
+                      <th>Status</th>
+                      <th>Evidence</th>
+                    </tr>
+                  </thead>
+                  <tbody id="csrf-findings-body">
+                    <tr><td colspan="6" class="placeholder">No findings yet.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" id="clickjacking-spider-tab">
+            <div class="spider-status-bar sticky-status-bar">
+              <span id="clickjacking-status">Status: <span class="status-idle">Idle</span></span>
+              <span id="clickjacking-progress">Progress: <span>0</span></span>
+              <span id="clickjacking-found">Vulns Found: <span>0</span></span>
+            </div>
+            <div class="spider-log-findings">
+              <div class="spider-log-container custom-scroll">
+                <div class="spider-log-content" id="clickjacking-spider-log">
+                  <div class="log-entry log-info">[INFO] Clickjacking Spider ready. Enter URLs and start hunting!</div>
+                </div>
+              </div>
+              <div class="spider-findings-container custom-scroll">
+                <table class="spider-findings-table">
+                  <thead>
+                    <tr>
+                      <th>Type</th>
+                      <th>Endpoint</th>
+                      <th>Iframe Mode</th>
+                      <th>Headers</th>
+                      <th>Status</th>
+                      <th>Evidence</th>
+                    </tr>
+                  </thead>
+                  <tbody id="clickjacking-findings-body">
+                    <tr><td colspan="6" class="placeholder">No findings yet.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" id="cors-spider-tab">
+            <div class="spider-status-bar sticky-status-bar">
+              <span id="cors-status">Status: <span class="status-idle">Idle</span></span>
+              <span id="cors-progress">Progress: <span>0</span></span>
+              <span id="cors-found">Vulns Found: <span>0</span></span>
+            </div>
+            <div class="spider-log-findings">
+              <div class="spider-log-container custom-scroll">
+                <div class="spider-log-content" id="cors-spider-log">
+                  <div class="log-entry log-info">[INFO] CORS Spider ready. Enter URLs and start hunting!</div>
+                </div>
+              </div>
+              <div class="spider-findings-container custom-scroll">
+                <table class="spider-findings-table">
+                  <thead>
+                    <tr>
+                      <th>Type</th>
+                      <th>Endpoint</th>
+                      <th>Method</th>
+                      <th>Origin</th>
+                      <th>CORS Headers</th>
+                      <th>Status</th>
+                      <th>Evidence</th>
+                    </tr>
+                  </thead>
+                  <tbody id="cors-findings-body">
+                    <tr><td colspan="7" class="placeholder">No findings yet.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" id="subdomain-spider-tab">
+            <div class="spider-status-bar sticky-status-bar">
+              <span id="subdomain-status">Status: <span class="status-idle">Idle</span></span>
+              <span id="subdomain-progress">Progress: <span>0</span></span>
+              <span id="subdomain-found">Vulns Found: <span>0</span></span>
+            </div>
+            <div class="spider-log-findings">
+              <div class="spider-log-container custom-scroll">
+                <div class="spider-log-content" id="subdomain-spider-log">
+                  <div class="log-entry log-info">[INFO] Subdomain Takeover Spider ready. Enter URLs and start hunting!</div>
+                </div>
+              </div>
+              <div class="spider-findings-container custom-scroll">
+                <table class="spider-findings-table">
+                  <thead>
+                    <tr>
+                      <th>Subdomain</th>
+                      <th>Status</th>
+                      <th>Reason</th>
+                      <th>CNAME/DNS</th>
+                      <th>Service</th>
+                      <th>Response</th>
+                    </tr>
+                  </thead>
+                  <tbody id="subdomain-findings-body">
+                    <tr><td colspan="6" class="placeholder">No findings yet.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- WordPress Recon Spider tab content -->
+          <div class="tab-pane" id="wordpressrecon-spider-tab">
+            <div class="spider-status-bar sticky-status-bar">
+              <span id="wordpressrecon-status">Status: <span class="status-idle">Idle</span></span>
+              <span id="wordpressrecon-progress">Progress: <span>0</span></span>
+              <span id="wordpressrecon-found">Findings: <span>0</span></span>
+            </div>
+            <div class="spider-log-findings">
+              <div class="spider-log-container custom-scroll">
+                <div class="spider-log-content" id="wordpressrecon-spider-log">
+                  <div class="log-entry log-info">[INFO] WordPress Recon Spider ready. Enter URLs and start hunting!</div>
+                </div>
+              </div>
+              <div class="spider-findings-container custom-scroll">
+                <table class="spider-findings-table">
+                  <thead>
+                    <tr>
+                      <th>Type</th>
+                      <th>Target</th>
+                      <th>Detail</th>
+                      <th>Status</th>
+                      <th>Evidence</th>
+                    </tr>
+                  </thead>
+                  <tbody id="wordpressrecon-findings-body">
+                    <tr><td colspan="5" class="placeholder">No findings yet.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="spider.js"></script>
+</body>
+</html>

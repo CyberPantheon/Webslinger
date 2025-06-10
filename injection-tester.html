@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Injection Tester</title>
+    <link rel="stylesheet" href="injection-tester.css">
+    <link rel="stylesheet" href="./fonts/fontawesome/css/all.min.css">
+</head>
+<body>
+    <div class="titlebar">
+        <div class="app-title">
+            <i class="fas fa-syringe"></i>
+            <span>Injection Spider</span>
+        </div>
+        <div class="window-controls">
+            <button class="window-btn minimize" id="minimize-btn" title="Minimize"><i class="fas fa-minus"></i></button>
+            <button class="window-btn close" id="close-btn" title="Close"><i class="fas fa-times"></i></button>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <aside class="control-panel">
+            <h2><i class="fas fa-sliders-h"></i> Configuration</h2>
+
+            <section class="config-section">
+                <label for="target-url">Target URL:</label>
+                <div class="input-group">
+                    <input type="text" id="target-url" placeholder="https://example.com/page">
+                    <button id="analyze-btn" class="icon-btn analyze" title="Analyze Target"><i class="fas fa-search"></i></button>
+                </div>
+            </section>
+
+            <section class="config-section">
+                <label>Test Type:</label>
+                <div class="test-type-buttons">
+                    <button class="test-type-btn active" data-type="xss" title="Cross-Site Scripting">XSS</button>
+                    <button class="test-type-btn" data-type="sqli" title="SQL Injection">SQLi</button>
+                    <!-- <button class="test-type-btn" data-type="cmdi" title="Command Injection">CmdI</button>
+                    <button class="test-type-btn" data-type="lfi" title="File Inclusion">LFI</button>
+                    <button class="test-type-btn" data-type="xxe" title="XML External Entity">XXE</button>
+                    <button class="test-type-btn" data-type="ssrf" title="Server-Side Request Forgery">SSRF</button>
+                    <button class="test-type-btn" data-type="ssti" title="Server-Side Template Injection">SSTI</button> -->
+                     </div>
+            </section>
+
+            <section class="config-section">
+                <label for="wordlist-select">Payload Wordlist:</label>
+                <div class="input-group">
+                    <select id="wordlist-select">
+                        <option value="">Select wordlist...</option>
+                    </select>
+                    <button id="refresh-wordlists" class="icon-btn refresh" title="Refresh Wordlists"><i class="fas fa-sync-alt"></i></button>
+                </div>
+            </section>
+
+             <section class="config-section">
+                <label>Test Settings:</label>
+                <div class="settings-grid">
+                    <div>
+                        <label for="threads">Threads:</label>
+                        <input type="number" id="threads" min="1" max="50" value="10" title="Concurrent requests">
+                    </div>
+                    <div>
+                        <label for="timeout">Timeout (ms):</label>
+                        <input type="number" id="timeout" min="100" max="30000" value="5000" title="Request timeout">
+                    </div>
+                    <div>
+                        <label for="delay">Delay (ms):</label>
+                        <input type="number" id="delay" min="0" max="5000" value="0" title="Delay between requests">
+                    </div>
+                 </div>
+                 <div class="checkbox-options">
+                     <label class="checkbox-label">
+                         <input type="checkbox" id="follow-redirects" checked> Follow Redirects
+                     </label>
+                     <label class="checkbox-label">
+                        <input type="checkbox" id="auto-save"> Auto-Save Results
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="test-all-params"> Test All Parameters Together
+                    </label>
+                 </div>
+            </section>
+
+             <section class="config-section">
+                 <label for="headers-input">Custom Headers (one per line):</label>
+                 <textarea id="headers-input" rows="3" placeholder="Header-Name: HeaderValue"></textarea>
+             </section>
+             <section class="config-section">
+                 <label for="cookies-input">Custom Cookies (semicolon separated):</label>
+                 <textarea id="cookies-input" rows="2" placeholder="cookie1=value1; cookie2=value2"></textarea>
+             </section>
+
+
+            <section class="action-buttons-section">
+                 <button id="start-btn" class="action-btn primary" disabled><i class="fas fa-play"></i> Start Test</button>
+                 <button id="stop-btn" class="action-btn danger" disabled><i class="fas fa-stop"></i> Stop Test</button>
+                 <button id="clear-btn" class="action-btn secondary"><i class="fas fa-trash-alt"></i> Clear All</button>
+                 <button id="export-btn" class="action-btn secondary" disabled><i class="fas fa-file-export"></i> Export Results</button>
+             </section>
+        </aside>
+
+        <main class="main-content">
+            <div id="loading-overlay" class="loading-overlay" style="display: none;">
+                <div class="spinner"></div>
+                <p id="loading-text">Loading...</p>
+            </div>
+
+            <div class="stats-bar">
+                <div><i class="fas fa-tasks"></i> Forms: <span id="forms-tested">0</span></div>
+                <div><i class="fas fa-crosshairs"></i> Params: <span id="params-tested">0</span></div>
+                <div><i class="fas fa-paper-plane"></i> Requests: <span id="total-requests">0</span></div>
+                <div><i class="fas fa-shield-alt"></i> Vulns: <span id="vulns-found">0</span></div>
+                <div><i class="fas fa-stopwatch"></i> Time: <span id="elapsed-time">00:00</span></div>
+                <div><i class="fas fa-tachometer-alt"></i> RPS: <span id="requests-per-second">0</span></div>
+            </div>
+
+             <div class="progress-area">
+                 <div class="progress-bar-container">
+                     <div class="progress-bar" id="progress-bar"></div>
+                 </div>
+                 <div id="progress-text" class="progress-percentage">0%</div>
+             </div>
+
+
+            <nav class="tab-navigation">
+                <button class="tab-btn active" data-tab="forms-tab"><i class="fab fa-wpforms"></i> Forms</button>
+                <button class="tab-btn" data-tab="results-tab"><i class="fas fa-clipboard-list"></i> Results</button>
+                <button class="tab-btn" data-tab="payloads-tab"><i class="fas fa-code"></i> Payloads</button>
+                <button class="tab-btn" data-tab="log-tab"><i class="fas fa-terminal"></i> Log</button>
+                <div class="filter-controls">
+                    <select id="filter-severity">
+                        <option value="">All Severities</option>
+                        </select>
+                    <select id="filter-type">
+                         <option value="">All Types</option>
+                         </select>
+                    <input type="text" id="filter-results" placeholder="Filter...">
+                </div>
+            </nav>
+
+            <div class="tab-content-area">
+                <div class="tab-pane active" id="forms-tab">
+                    <div class="scrollable-content" id="forms-container">
+                        <p class="placeholder">Enter a URL and click Analyze <i class="fas fa-arrow-left"></i></p>
+                    </div>
+                </div>
+                <div class="tab-pane" id="results-tab">
+                     <div class="scrollable-content table-container">
+                         <table class="results-table">
+                             <thead>
+                                 <tr>
+                                     <th>ID</th>
+                                     <th>Severity</th>
+                                     <th>Type</th>
+                                     <th>Parameter</th>
+                                     <th>Payload</th>
+                                     <th>Details</th>
+                                 </tr>
+                             </thead>
+                             <tbody id="results-body">
+                                 <tr><td colspan="6" class="placeholder">No results yet. Run a test.</td></tr>
+                             </tbody>
+                         </table>
+                     </div>
+                </div>
+                 <div class="tab-pane" id="payloads-tab">
+                     <div class="scrollable-content" id="payloads-container">
+                         <p class="placeholder">Payloads for the selected wordlist will appear here.</p>
+                     </div>
+                 </div>
+                <div class="tab-pane" id="log-tab">
+                     <div class="scrollable-content log-container" id="log-content">
+                         </div>
+                 </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="injection-tester.js"></script>
+</body>
+</html>

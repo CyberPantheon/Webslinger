@@ -1,0 +1,24 @@
+{
+  "GEMINI_API_KEY": "",
+  "spider": {
+    "maxConcurrency": 5,
+    "rateLimit": {
+      "requestsPerSecond": 50,
+      "timeWindow": 1000
+    },
+    "timeout": 10000,
+    "retries": 3,
+    "mutations": {
+      "enabled": true,
+      "sqlInjection": true,
+      "nosqlInjection": true,
+      "pathTraversal": true,
+      "parameterPollution": true
+    },
+    "analysis": {
+      "sensitiveData": true,
+      "errorDetection": true,
+      "responseComparison": true
+    }
+  }
+}

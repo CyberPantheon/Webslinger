@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  
+  <title>Bruteforcer</title>
+  <link rel="stylesheet" href="bruteforcer.css">
+  <link rel="stylesheet" href="./fonts/fontawesome/css/all.min.css">
+</head>
+<body>
+  <div class="titlebar">
+    <div class="app-title">
+      <i class="fas fa-hammer"></i>
+      <span>Bruteforcer</span>
+    </div>
+    <div class="window-controls">
+      <button class="window-btn minimize" id="minimize-btn" title="Minimize"><i class="fas fa-minus"></i></button>
+      <button class="window-btn close" id="close-btn" title="Close"><i class="fas fa-times"></i></button>
+    </div>
+  </div>
+
+  <div class="app-container bruteforcer-container">
+    <aside class="control-panel input-section">
+        <section class="config-section target-input">
+            <label for="target-url">Target URL:</label>
+            <div class="input-group">
+              <input type="text" id="target-url" placeholder="example.com or http://example.com/path/">
+              <select id="target-type">
+                <option value="subdomain">Subdomains</option>
+                <option value="directory">Directories</option>
+                <option value="file">Files</option>
+                <option value="parameter">Parameters</option>
+                <option value="vhost">Virtual Hosts</option>
+              </select>
+            </div>
+        </section>
+
+        <section class="config-section wordlist-section">
+            <label for="wordlist-select">Wordlist:</label>
+            <div class="input-group">
+              <select id="wordlist-select">
+                <option value="">Loading...</option>
+              </select>
+              <button id="refresh-wordlists" class="icon-btn refresh" title="Refresh Wordlists"><i class="fas fa-sync-alt"></i></button>
+            </div>
+        </section>
+
+        <section class="config-section options-section">
+            <label>Test Settings:</label>
+            <div class="settings-grid">
+              <div>
+                <label for="threads">Threads:</label>
+                <input type="number" id="threads" min="1" max="50" value="10">
+              </div>
+              <div>
+                <label for="timeout">Timeout (ms):</label>
+                <input type="number" id="timeout" min="100" max="10000" value="3000">
+              </div>
+              <div>
+                <label for="extensions">Extensions:</label>
+                <input type="text" id="extensions" placeholder="php,html,js...">
+              </div>
+              <div>
+                <label for="status-codes">Match Codes:</label>
+                <input type="text" id="status-codes" value="200,204,301,302,307,401,403">
+              </div>
+            </div>
+        </section>
+
+         <section class="config-section collapsible">
+             <h3 class="collapsible-header"><i class="fas fa-chevron-down"></i> Advanced Options</h3>
+             <div class="collapsible-content">
+                 <div class="checkbox-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="recursive" disabled> Recursive (Not Implemented)
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="follow-redirects" checked> Follow Redirects
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="case-sensitive"> Case Sensitive
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="show-progress" checked> Show Progress
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="auto-save" checked> Auto Save Results
+                    </label>
+                     <label class="checkbox-label" title="Enable DNS resolution for subdomain/vhost checks (usually needed)">
+                        <input type="checkbox" id="dns-resolution" checked> DNS Resolution
+                    </label>
+                </div>
+             </div>
+         </section>
+
+      <section class="config-section action-buttons-section">
+        <button id="start-btn" class="action-btn start"><i class="fas fa-play"></i> Start</button>
+        <button id="stop-btn" class="action-btn stop" disabled><i class="fas fa-stop"></i> Stop</button>
+        <button id="clear-btn" class="action-btn clear"><i class="fas fa-trash"></i> Clear</button>
+        <button id="export-btn" class="action-btn export" disabled><i class="fas fa-file-export"></i> Export</button>
+      </section>
+    </aside>
+
+    <main class="main-content results-section">
+      <nav class="tab-navigation results-header">
+        <div class="tab-container">
+          <button class="tab-btn active" data-tab="results"><i class="fas fa-list"></i> Results</button>
+          <button class="tab-btn" data-tab="statistics"><i class="fas fa-chart-bar"></i> Statistics</button>
+          <button class="tab-btn" data-tab="log"><i class="fas fa-terminal"></i> Log</button>
+        </div>
+        <div class="filter-controls">
+          <input type="text" id="filter-results" placeholder="Filter URL...">
+          <select id="filter-status">
+            <option value="all">All Status</option>
+            <option value="200">200</option>
+            <option value="204">204</option>
+            <option value="301">301</option>
+            <option value="302">302</option>
+             <option value="307">307</option>
+            <option value="401">401</option>
+            <option value="403">403</option>
+            <option value="404">404</option>
+             <option value="500">500</option>
+          </select>
+        </div>
+      </nav>
+
+      <div class="tab-content-area">
+          <div class="tab-pane active" id="results-tab">
+              <div class="table-container scrollable-content results-table-container">
+                  <table class="results-table">
+                    <thead>
+                      <tr>
+                        <th>URL</th>
+                        <th>Status</th>
+                        <th>Size</th>
+                        <th>Time (ms)</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="results-body">
+                        <tr><td colspan="5" class="placeholder">Results will appear here.</td></tr>
+                    </tbody>
+                  </table>
+              </div>
+          </div>
+
+          <div class="tab-pane" id="statistics-tab">
+                <div class="stats-container scrollable-content">
+                  <div class="progress-area" id="progress-container" style="display: block;"> <div class="progress-info">
+                          <span class="progress-label">Current Word: <strong id="current-word">-</strong></span>
+                          <span class="progress-label">Progress: <strong id="progress-count">0</strong> / <strong id="total-words">0</strong></span>
+                      </div>
+                      <div class="progress-bar-container">
+                          <div id="progress-bar" class="progress-bar"></div>
+                      </div>
+                  </div>
+
+                  <div class="stats-grid">
+                    <div class="stat-item"><span>Requests:</span> <strong id="total-requests">0</strong></div>
+                    <div class="stat-item"><span>Time:</span> <strong id="elapsed-time">00:00:00</strong></div>
+                    <div class="stat-item"><span>RPS:</span> <strong id="requests-per-second">0</strong></div>
+                    <div class="stat-item"><span>Found:</span> <strong id="found-items">0</strong></div>
+                    <div class="stat-item"><span>Errors:</span> <strong id="error-count">0</strong></div>
+                    <div class="stat-item"><span>Avg Time:</span> <strong id="avg-response-time">0 ms</strong></div>
+                  </div>
+
+                  <div class="status-distribution">
+                    <h4><i class="fas fa-tag"></i> Status Code Distribution</h4>
+                    <div class="status-bars" id="status-bars">
+                      <p class="placeholder">Status distribution appears after test.</p>
+                    </div>
+                  </div>
+                </div>
+           </div>
+
+          <div class="tab-pane" id="log-tab">
+              <div class="log-container scrollable-content">
+                <div class="log-content log-area" id="log-content">
+                  <div class="log-entry log-info"><span class="log-timestamp">[...]</span> <span class="log-severity">[INFO]</span> <span class="log-message">Bruteforcer initialized.</span></div>
+                </div>
+              </div>
+          </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="bruteforcer.js"></script>
+   <script>
+        // Basic script for collapsibles and tab switching
+        document.addEventListener('DOMContentLoaded', () => {
+            // Tab Switching
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetTab = button.getAttribute('data-tab') + '-tab';
+                    document.querySelector('.tab-btn.active')?.classList.remove('active');
+                    button.classList.add('active');
+                    document.querySelector('.tab-pane.active')?.classList.remove('active');
+                    document.getElementById(targetTab)?.classList.add('active');
+                });
+            });
+
+             // Collapsible Sections
+             document.querySelectorAll('.collapsible-header').forEach(header => {
+                 header.addEventListener('click', () => {
+                     const content = header.nextElementSibling;
+                     const icon = header.querySelector('i');
+                     const isCurrentlyHidden = content.style.display === 'none' || content.style.display === '';
+
+                     content.style.display = isCurrentlyHidden ? 'block' : 'none';
+                     icon.classList.toggle('fa-chevron-down', !isCurrentlyHidden);
+                     icon.classList.toggle('fa-chevron-up', isCurrentlyHidden);
+                 });
+                 // Initialize as collapsed
+                 header.nextElementSibling.style.display = 'none';
+                 header.querySelector('i').classList.add('fa-chevron-down');
+             });
+        });
+    </script>
+</body>
+</html>

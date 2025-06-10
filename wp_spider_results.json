@@ -1,0 +1,202 @@
+[
+  {
+    "type": "WordPress Version",
+    "target": "https://kenyasocialscienceforum.wordpress.com/",
+    "detail": "20190507",
+    "status": "Detected",
+    "evidence": "https://kenyasocialscienceforum.wordpress.com/readme.html",
+    "timestamp": "2025-05-15T09:49:57.218Z"
+  },
+  {
+    "type": "WordPress Version",
+    "target": "https://kenyasocialscienceforum.wordpress.com/",
+    "detail": "20190507",
+    "status": "Detected",
+    "evidence": "https://kenyasocialscienceforum.wordpress.com/wp-config.php.bak",
+    "timestamp": "2025-05-15T09:49:58.411Z"
+  },
+  {
+    "type": "WordPress Version",
+    "target": "https://kenyasocialscienceforum.wordpress.com/",
+    "detail": "20190507",
+    "status": "Detected",
+    "evidence": "https://kenyasocialscienceforum.wordpress.com/debug.log",
+    "timestamp": "2025-05-15T09:49:59.592Z"
+  },
+  {
+    "type": "WordPress Version",
+    "target": "https://kenyasocialscienceforum.wordpress.com/",
+    "detail": "20190507",
+    "status": "Detected",
+    "evidence": "https://kenyasocialscienceforum.wordpress.com/wp-content/backups/",
+    "timestamp": "2025-05-15T09:50:02.057Z"
+  },
+  {
+    "type": "WordPress Version",
+    "target": "https://kenyasocialscienceforum.wordpress.com/",
+    "detail": "20190507",
+    "status": "Detected",
+    "evidence": "https://kenyasocialscienceforum.wordpress.com/wp-content/uploads/",
+    "timestamp": "2025-05-15T09:50:03.342Z"
+  },
+  {
+    "type": "WordPress Version",
+    "target": "https://kenyasocialscienceforum.wordpress.com/",
+    "detail": "20190507",
+    "status": "Detected",
+    "evidence": "https://kenyasocialscienceforum.wordpress.com/wp-content/logs/",
+    "timestamp": "2025-05-15T09:50:04.679Z"
+  },
+  {
+    "type": "WordPress Version",
+    "target": "https://kenyasocialscienceforum.wordpress.com/",
+    "detail": "6.8.1",
+    "status": "Detected",
+    "evidence": "https://kenyasocialscienceforum.wordpress.com/wp-content/old/",
+    "timestamp": "2025-05-15T09:50:05.926Z"
+  },
+  {
+    "type": "WordPress",
+    "target": "https://kenyasocialscienceforum.wordpress.com/",
+    "detail": "Detected via /robots.txt",
+    "status": "Detected",
+    "evidence": "https://kenyasocialscienceforum.wordpress.com/robots.txt",
+    "timestamp": "2025-05-15T09:50:06.602Z"
+  },
+  {
+    "type": "WordPress",
+    "target": "https://kenyasocialscienceforum.wordpress.com/",
+    "detail": "Detected via /sitemap.xml",
+    "status": "Detected",
+    "evidence": "https://kenyasocialscienceforum.wordpress.com/sitemap.xml",
+    "timestamp": "2025-05-15T09:50:08.169Z"
+  },
+  {
+    "type": "Theme (HTML Ref)",
+    "target": "https://kenyasocialscienceforum.wordpress.com/",
+    "detail": "pub",
+    "status": "Referenced",
+    "evidence": "https://kenyasocialscienceforum.wordpress.com",
+    "timestamp": "2025-05-15T09:50:10.841Z"
+  },
+  {
+    "type": "Theme (HTML Ref)",
+    "target": "https://kenyasocialscienceforum.wordpress.com/",
+    "detail": "h4",
+    "status": "Referenced",
+    "evidence": "https://kenyasocialscienceforum.wordpress.com",
+    "timestamp": "2025-05-15T09:50:10.843Z"
+  },
+  {
+    "type": "XML-RPC",
+    "target": "https://kenyasocialscienceforum.wordpress.com/",
+    "detail": "xmlrpc.php status 200",
+    "status": "Exposed",
+    "evidence": "https://kenyasocialscienceforum.wordpress.com/xmlrpc.php",
+    "timestamp": "2025-05-15T09:50:34.659Z"
+  },
+  {
+    "type": "XML-RPC",
+    "target": "https://kenyasocialscienceforum.wordpress.com/",
+    "detail": "system.listMethods enabled",
+    "status": "Exposed",
+    "evidence": "https://kenyasocialscienceforum.wordpress.com/xmlrpc.php",
+    "timestamp": "2025-05-15T09:50:35.347Z"
+  },
+  {
+    "type": "Robots.txt",
+    "target": "https://kenyasocialscienceforum.wordpress.com/",
+    "detail": "Accessible",
+    "status": "Found",
+    "evidence": "https://kenyasocialscienceforum.wordpress.com/robots.txt",
+    "timestamp": "2025-05-15T09:50:37.175Z"
+  },
+  {
+    "type": "Sitemap.xml",
+    "target": "https://kenyasocialscienceforum.wordpress.com/",
+    "detail": "Accessible",
+    "status": "Found",
+    "evidence": "https://kenyasocialscienceforum.wordpress.com/sitemap.xml",
+    "timestamp": "2025-05-15T09:50:38.718Z"
+  },
+  {
+    "type": "User",
+    "target": "https://kenyasocialscienceforum.wordpress.com/",
+    "detail": "African Interdisciplinary Studies Association Website",
+    "status": "Found",
+    "evidence": "https://kenyasocialscienceforum.wordpress.com/feed/",
+    "timestamp": "2025-05-15T09:50:47.231Z"
+  },
+  {
+    "type": "User",
+    "target": "https://kenyasocialscienceforum.wordpress.com/",
+    "detail": "African Interdisciplinary Studies Association Website",
+    "status": "Found",
+    "evidence": "https://kenyasocialscienceforum.wordpress.com/feed/",
+    "timestamp": "2025-05-15T09:50:47.234Z"
+  },
+  {
+    "type": "User",
+    "target": "https://kenyasocialscienceforum.wordpress.com/",
+    "detail": "African Interdisciplinary Studies Association Website",
+    "status": "Found",
+    "evidence": "https://kenyasocialscienceforum.wordpress.com/feed/",
+    "timestamp": "2025-05-15T09:50:47.245Z"
+  },
+  {
+    "type": "User",
+    "target": "https://kenyasocialscienceforum.wordpress.com/",
+    "detail": "African Interdisciplinary Studies Association Website",
+    "status": "Found",
+    "evidence": "https://kenyasocialscienceforum.wordpress.com/feed/",
+    "timestamp": "2025-05-15T09:50:47.248Z"
+  },
+  {
+    "type": "User",
+    "target": "https://kenyasocialscienceforum.wordpress.com/",
+    "detail": "African Interdisciplinary Studies Association Website",
+    "status": "Found",
+    "evidence": "https://kenyasocialscienceforum.wordpress.com/feed/",
+    "timestamp": "2025-05-15T09:50:47.250Z"
+  },
+  {
+    "type": "User",
+    "target": "https://kenyasocialscienceforum.wordpress.com/",
+    "detail": "African Interdisciplinary Studies Association Website",
+    "status": "Found",
+    "evidence": "https://kenyasocialscienceforum.wordpress.com/feed/",
+    "timestamp": "2025-05-15T09:50:47.254Z"
+  },
+  {
+    "type": "User",
+    "target": "https://kenyasocialscienceforum.wordpress.com/",
+    "detail": "African Interdisciplinary Studies Association Website",
+    "status": "Found",
+    "evidence": "https://kenyasocialscienceforum.wordpress.com/feed/",
+    "timestamp": "2025-05-15T09:50:47.258Z"
+  },
+  {
+    "type": "User",
+    "target": "https://kenyasocialscienceforum.wordpress.com/",
+    "detail": "African Interdisciplinary Studies Association Website",
+    "status": "Found",
+    "evidence": "https://kenyasocialscienceforum.wordpress.com/feed/",
+    "timestamp": "2025-05-15T09:50:47.261Z"
+  },
+  {
+    "type": "User",
+    "target": "https://kenyasocialscienceforum.wordpress.com/",
+    "detail": "African Interdisciplinary Studies Association Website",
+    "status": "Found",
+    "evidence": "https://kenyasocialscienceforum.wordpress.com/feed/",
+    "timestamp": "2025-05-15T09:50:47.263Z"
+  },
+  {
+    "type": "User",
+    "target": "https://kenyasocialscienceforum.wordpress.com/",
+    "detail": "African Interdisciplinary Studies Association Website",
+    "status": "Found",
+    "evidence": "https://kenyasocialscienceforum.wordpress.com/feed/",
+    "timestamp": "2025-05-15T09:50:47.264Z"
+  }
+]

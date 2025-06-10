@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="UTF-8">   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:;">
+   <title>Arsenal</title>
+   <link rel="stylesheet" href="arsenal.css">
+   <link rel="stylesheet" href="./fonts/fontawesome/css/all.min.css">
+</head>
+<body>
+   <div class="background-container">
+      <div class="particles-container" id="particles-container"></div>
+   </div>
+   
+   <div class="titlebar">
+       <div class="app-title">
+           <i class="fas fa-shield-alt"></i>
+           <span>Arsenal</span>
+       </div>
+       <div class="window-controls">
+            <button class="window-btn minimize" id="minimize-btn" title="Minimize"><i class="fas fa-minus"></i></button>
+           <button class="window-btn close" id="close-btn" title="Close"><i class="fas fa-times"></i></button>
+        </div>
+   </div>
+
+   <div class="app-container tools-container">
+      <div class="header-section">
+         <h2 class="section-title">Tools & Spiders</h2>
+         <p class="section-subtitle">Select a tool to launch</p>
+      </div>
+
+      <div class="tools-grid">
+         <!-- <div class="tool-card" id="proxy-toggle">
+            <div class="tool-icon">
+               <i class="fas fa-satellite-dish"></i>
+            </div>
+            <div class="tool-content" id="proxyToggle">
+               <span class="tool-name">MITM Proxy</span>
+               <p class="tool-description">Intercept and modify network traffic.</p>
+            </div>
+            <div class="tool-status">
+               <span class="status-indicator"></span>
+            </div>
+         </div> -->
+
+         <div class="tool-card" id="web-recon-toggle">
+            <div class="tool-icon">
+               <i class="fas fa-sitemap"></i>
+            </div>
+            <div class="tool-content">
+               <span class="tool-name">Recon spider</span>
+               <p class="tool-description">Analyze website structure and tech.</p>
+            </div>
+            <div class="tool-status">
+               <span class="status-indicator"></span>
+            </div>
+         </div>
+
+         <div class="tool-card" id="bruteforcer-toggle">
+            <div class="tool-icon">
+               <i class="fas fa-hammer"></i>
+            </div>
+            <div class="tool-content">
+               <span class="tool-name">Enum Spider</span>
+               <p class="tool-description">Discover subdomains, dirs, files.</p>
+            </div>
+            <div class="tool-status">
+               <span class="status-indicator"></span>
+            </div>
+         </div>
+
+         <div class="tool-card" id="nmap-scanner-toggle">
+            <div class="tool-icon">
+               <i class="fas fa-network-wired"></i>
+            </div>
+            <div class="tool-content">
+               <span class="tool-name">Nmap Scanner</span>
+               <p class="tool-description">Network scanning & enumeration.</p>
+            </div>
+            <div class="tool-status">
+               <span class="status-indicator"></span>
+            </div>
+         </div>
+
+         <div class="tool-card" id="injection-tester-toggle">
+            <div class="tool-icon">
+               <i class="fas fa-syringe"></i>
+            </div>
+            <div class="tool-content">
+               <span class="tool-name">Injection Spider</span>
+               <p class="tool-description">Test inputs for XSS, SQLi, etc.</p>
+            </div>
+            <div class="tool-status">
+               <span class="status-indicator"></span>
+            </div>
+         </div>
+
+         <div class="tool-card" id="spiders-toggle">
+            <div class="tool-icon">
+               <i class="fas fa-spider"></i>
+            </div>
+            <div class="tool-content">
+               <span class="tool-name">Attack Spiders</span>
+               <p class="tool-description">Autonomous vulnerability hunting robots.</p>
+            </div>
+            <div class="tool-status">
+               <span class="status-indicator"></span>
+            </div>
+         </div>
+
+         <div class="tool-card" id="paramhunter-toggle">
+            <div class="tool-icon">
+               <i class="fas fa-search-location"></i>
+            </div>
+            <div class="tool-content">
+               <span class="tool-name">ParamHunter</span>
+               <p class="tool-description">Hunt for and analyze URL parameters.</p>
+            </div>
+            <div class="tool-status">
+               <span class="status-indicator"></span>
+            </div>
+         </div>
+
+         <!-- <div class="tool-card" id="burpsuite-tool">
+            <div class="tool-icon">
+               <i class="fas fa-flask"></i>
+            </div>
+            <div class="tool-content">
+               <span class="tool-name">Burp Suite</span>
+               <p class="tool-description">Launch Burp Suite Community Edition </p>
+            </div>
+            <div class="tool-status">
+               <span class="status-indicator"></span>
+            </div>
+         </div> -->
+      </div>
+   </div>
+
+   <div class="status-bar">
+      <div class="status-item">
+         <i class="fas fa-info-circle"></i>
+         <span id="status-message">Ready</span>
+      </div>
+      <div class="status-item">
+         <i class="fas fa-shield-alt"></i>
+         <span>Arsenal v1.0</span>
+      </div>
+   </div>
+
+   <div id="tooltip" class="tooltip"></div>
+
+   <script src="arsenal.js"></script>
+   <script src="cad.js"></script>
+</body>
+</html>

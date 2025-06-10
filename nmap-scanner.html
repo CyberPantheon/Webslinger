@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; img-src 'self' data: https://cdnjs.cloudflare.com;">
+  <title>Nmap Scanner</title>
+  <link rel="stylesheet" href="nmap-scanner.css">
+  <link rel="stylesheet" href="./fonts/fontawesome/css/all.min.css">
+</head>
+<body>
+  <div class="titlebar">
+    <div class="app-title">
+      <i class="fas fa-network-wired"></i>
+      <span>Nmap Scanner</span>
+    </div>
+    <div class="window-controls">
+      <button class="window-btn minimize" id="minimize-btn" title="Minimize"><i class="fas fa-minus"></i></button>
+      <button class="window-btn close" id="close-btn" title="Close"><i class="fas fa-times"></i></button>
+    </div>
+  </div>
+
+  <div class="app-container nmap-container">
+    <aside class="control-panel input-section">
+      <section class="config-section">
+        <label for="target-input">Target:</label>
+        <div class="input-group">
+          <input type="text" id="target-input" placeholder="IP, hostname, range...">
+          <select id="target-type">
+            <option value="single">Single Host</option>
+            <option value="range">IP Range</option>
+            <option value="subnet">Subnet</option>
+            <option value="file">From File (-iL)</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="config-section">
+        <label>Scan Profile:</label>
+        <div class="profile-buttons">
+          <button class="profile-btn active" data-profile="quick">Quick</button>
+          <button class="profile-btn" data-profile="basic">Basic</button>
+          <button class="profile-btn" data-profile="full">Full</button>
+          <button class="profile-btn" data-profile="vuln">Vuln</button>
+          <button class="profile-btn" data-profile="custom">Custom</button>
+        </div>
+      </section>
+
+      <section class="config-section scan-options">
+         <label>Common Options:</label>
+         <div class="settings-grid">
+            <div>
+                <label for="port-range">Port Range:</label>
+                <input type="text" id="port-range" placeholder="e.g., 1-1000, 80,443">
+            </div>
+             <div>
+                <label for="timing-template">Timing (-T):</label>
+                <select id="timing-template">
+                  <option value="0">T0 Paranoid</option>
+                  <option value="1">T1 Sneaky</option>
+                  <option value="2">T2 Polite</option>
+                  <option value="3" selected>T3 Normal</option>
+                  <option value="4">T4 Aggressive</option>
+                  <option value="5">T5 Insane</option>
+                </select>
+            </div>
+             <div>
+                <label for="interface">Interface (-e):</label>
+                <select id="interface">
+                  <option value="default">Default</option>
+                  </select>
+            </div>
+            </div>
+      </section>
+
+      <section class="config-section collapsible">
+           <h3 class="collapsible-header"><i class="fas fa-chevron-down"></i> Basic Detection Options</h3>
+           <div class="collapsible-content" style="display: none;"> <div class="checkbox-options">
+                   <label class="checkbox-label">
+                      <input type="checkbox" id="os-detection"> OS Detection (-O)
+                   </label>
+                   <label class="checkbox-label">
+                      <input type="checkbox" id="version-detection"> Version Detection (-sV)
+                   </label>
+                   <label class="checkbox-label">
+                      <input type="checkbox" id="script-scan"> Default Scripts (-sC)
+                   </label>
+                   <label class="checkbox-label">
+                      <input type="checkbox" id="aggressive-scan"> Aggressive (-A)
+                   </label>
+                    <label class="checkbox-label">
+                      <input type="checkbox" id="traceroute"> Traceroute (--traceroute)
+                   </label>
+               </div>
+           </div>
+       </section>
+
+       <section class="config-section collapsible">
+           <h3 class="collapsible-header"><i class="fas fa-chevron-down"></i> Host Discovery</h3>
+           <div class="collapsible-content" style="display: none;"> <div class="checkbox-options">
+                     <label class="checkbox-label">
+                        <input type="checkbox" id="dns-resolution" checked> DNS Resolution (Default: On, -n to disable)
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="ping-scan"> List Scan (-sn / -sL)
+                    </label>
+                     <label class="checkbox-label">
+                        <input type="checkbox" id="skip-host-discovery"> No Ping (-Pn)
+                    </label>
+                </div>
+           </div>
+       </section>
+
+       <section class="config-section collapsible">
+           <h3 class="collapsible-header"><i class="fas fa-chevron-down"></i> Scan Techniques</h3>
+           <div class="collapsible-content" style="display: none;"> <div class="settings-grid scan-techniques">
+                    <label class="radio-label"><input type="radio" name="scan-technique" value="sS" checked> SYN (-sS)</label>
+                    <label class="radio-label"><input type="radio" name="scan-technique" value="sT"> Connect (-sT)</label>
+                    <label class="radio-label"><input type="radio" name="scan-technique" value="sU"> UDP (-sU)</label>
+                    <label class="radio-label"><input type="radio" name="scan-technique" value="sA"> ACK (-sA)</label>
+                    <label class="radio-label"><input type="radio" name="scan-technique" value="sW"> Window (-sW)</label>
+                    <label class="radio-label"><input type="radio" name="scan-technique" value="sM"> Maimon (-sM)</label>
+                    <label class="radio-label"><input type="radio" name="scan-technique" value="sN"> NULL (-sN)</label>
+                    <label class="radio-label"><input type="radio" name="scan-technique" value="sF"> FIN (-sF)</label>
+                    <label class="radio-label"><input type="radio" name="scan-technique" value="sX"> XMAS (-sX)</label>
+                </div>
+           </div>
+       </section>
+
+       <section class="config-section collapsible">
+           <h3 class="collapsible-header"><i class="fas fa-chevron-down"></i> NSE Scripts (--script)</h3>
+           <div class="collapsible-content" style="display: none;"> <label>Script Categories:</label>
+               <div class="settings-grid script-selection">
+                   <label class="checkbox-label"><input type="checkbox" class="script-category-cb" id="script-auth"> Auth</label>
+                   <label class="checkbox-label"><input type="checkbox" class="script-category-cb" id="script-broadcast"> Broadcast</label>
+                   <label class="checkbox-label"><input type="checkbox" class="script-category-cb" id="script-brute"> Brute</label>
+                   <label class="checkbox-label"><input type="checkbox" class="script-category-cb" id="script-discovery"> Discovery</label>
+                   <label class="checkbox-label"><input type="checkbox" class="script-category-cb" id="script-dos"> DOS</label>
+                   <label class="checkbox-label"><input type="checkbox" class="script-category-cb" id="script-exploit"> Exploit</label>
+                   <label class="checkbox-label"><input type="checkbox" class="script-category-cb" id="script-external"> External</label>
+                   <label class="checkbox-label"><input type="checkbox" class="script-category-cb" id="script-fuzzer"> Fuzzer</label>
+                   <label class="checkbox-label"><input type="checkbox" class="script-category-cb" id="script-intrusive"> Intrusive</label>
+                   <label class="checkbox-label"><input type="checkbox" class="script-category-cb" id="script-malware"> Malware</label>
+                   <label class="checkbox-label"><input type="checkbox" class="script-category-cb" id="script-safe"> Safe</label>
+                   <label class="checkbox-label"><input type="checkbox" class="script-category-cb" id="script-version"> Version</label>
+                   <label class="checkbox-label"><input type="checkbox" class="script-category-cb" id="script-vuln"> Vuln</label>
+                </div>
+                <hr>
+                <label>Common Individual Scripts:</label>
+                 <div class="settings-grid script-selection">
+                    <label class="checkbox-label"><input type="checkbox" class="script-individual-cb" value="http-title"> http-title</label>
+                    <label class="checkbox-label"><input type="checkbox" class="script-individual-cb" value="smb-os-discovery"> smb-os-discovery</label>
+                    <label class="checkbox-label"><input type="checkbox" class="script-individual-cb" value="ssl-enum-ciphers"> ssl-enum-ciphers</label>
+                    <label class="checkbox-label"><input type="checkbox" class="script-individual-cb" value="dns-brute"> dns-brute</label>
+                    <label class="checkbox-label"><input type="checkbox" class="script-individual-cb" value="ftp-anon"> ftp-anon</label>
+                    <label class="checkbox-label"><input type="checkbox" class="script-individual-cb" value="ssh-hostkey"> ssh-hostkey</label>
+                    <label class="checkbox-label"><input type="checkbox" class="script-individual-cb" value="banner"> banner</label>
+                    <label class="checkbox-label"><input type="checkbox" class="script-individual-cb" value="vulners"> vulners (Vuln)</label>
+                    <label class="checkbox-label"><input type="checkbox" class="script-individual-cb" value="smb-vuln-ms17-010"> smb-vuln-ms17-010</label>
+                    <label class="checkbox-label"><input type="checkbox" class="script-individual-cb" value="http-enum"> http-enum</label>
+                 </div>
+                 <hr>
+                 <div class="custom-script">
+                    <label for="custom-scripts">Additional Scripts (comma-separated):</label>
+                    <input type="text" id="custom-scripts" placeholder="e.g., http-methods,another-script.nse">
+                </div>
+           </div>
+       </section>
+
+       <section class="config-section collapsible">
+           <h3 class="collapsible-header"><i class="fas fa-chevron-down"></i> Other Options</h3>
+           <div class="collapsible-content" style="display: none;"> <label for="additional-options">Additional Nmap Options:</label>
+               <textarea id="additional-options" rows="2" placeholder="-v --reason --max-retries 3 ..."></textarea>
+           </div>
+       </section>
+
+        <section class="config-section">
+            <label>Command Preview (Editable):</label>
+            <div class="command-box">
+              <textarea id="command-preview-area" rows="3">nmap -sS -T3 [target]</textarea>
+              <button id="copy-command" class="icon-btn" title="Copy Command"><i class="fas fa-copy"></i></button>
+            </div>
+        </section>
+
+      <section class="config-section action-buttons-section">
+        <button id="start-scan" class="action-btn start"><i class="fas fa-play"></i> Start Scan</button>
+        <button id="stop-scan" class="action-btn stop" disabled><i class="fas fa-stop"></i> Stop Scan</button>
+        <button id="clear-results" class="action-btn clear"><i class="fas fa-trash"></i> Clear</button>
+        <button id="export-results" class="action-btn export"><i class="fas fa-file-export"></i> Export</button>
+      </section>
+    </aside>
+
+    <main class="main-content results-section">
+       <div class="loading-overlay" id="loading-overlay" style="display: none;">
+           <div class="spinner"></div>
+           <div id="loading-text" class="loading-status">Scanning in progress...</div>
+           <div class="progress-area">
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="scan-progress-bar"></div>
+                </div>
+                <div id="scan-progress-text" class="progress-percentage">Initializing...</div>
+            </div>
+       </div>
+
+      <nav class="tab-navigation results-header">
+         <div class="tab-container">
+             <button class="tab-btn active" data-tab="summary"><i class="fas fa-chart-pie"></i> Summary</button>
+             <button class="tab-btn" data-tab="hosts"><i class="fas fa-server"></i> Hosts</button>
+             <button class="tab-btn" data-tab="ports"><i class="fas fa-door-open"></i> Ports</button>
+             <button class="tab-btn" data-tab="services"><i class="fas fa-cogs"></i> Services</button>
+             <button class="tab-btn" data-tab="vulnerabilities"><i class="fas fa-bug"></i> Vulnerabilities</button>
+             <button class="tab-btn" data-tab="raw"><i class="fas fa-terminal"></i> Raw Output</button>
+         </div>
+         <div class="filter-controls">
+           <input type="text" id="filter-results" placeholder="Filter...">
+           <select id="filter-status">
+             <option value="all">All Status</option>
+             <option value="open">Open</option>
+             <option value="closed">Closed</option>
+             <option value="filtered">Filtered</option>
+             <option value="up">Up</option>
+             <option value="down">Down</option>
+           </select>
+         </div>
+      </nav>
+
+      <div class="tab-content-area">
+            <div class="tab-pane active scrollable-content" id="summary-tab">
+                <div class="summary-container">
+                  <div class="summary-header">
+                    <h2>Scan Summary</h2>
+                    <div class="scan-info" id="scan-info">
+                      <p class="placeholder">Start a scan to see results</p>
+                    </div>
+                  </div>
+                  <div class="summary-grid">
+                    <div class="summary-card">
+                       <div class="card-header">
+                           <i class="fas fa-server"></i><h3>Hosts</h3>
+                       </div>
+                       <div class="card-content" id="hosts-summary">
+                           <p class="placeholder">No hosts scanned</p>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                       <div class="card-header">
+                           <i class="fas fa-network-wired"></i><h3>Ports</h3>
+                       </div>
+                       <div class="card-content" id="ports-summary">
+                           <p class="placeholder">No ports scanned</p>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                       <div class="card-header">
+                           <i class="fas fa-cogs"></i><h3>Services</h3>
+                       </div>
+                       <div class="card-content" id="services-summary">
+                           <p class="placeholder">No services detected</p>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                       <div class="card-header">
+                           <i class="fas fa-bug"></i><h3>Vulnerabilities</h3>
+                       </div>
+                       <div class="card-content" id="vulns-summary">
+                            <p class="placeholder">No vulnerabilities detected</p>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="recommendations summary-card" id="recommendations">
+                      <div class="card-header">
+                          <i class="fas fa-lightbulb" style="color: var(--warning);"></i>
+                          <h3>Recommendations</h3>
+                      </div>
+                      <div class="card-content">
+                           <p class="placeholder">Recommendations will appear after scanning</p>
+                      </div>
+                  </div>
+                </div>
+            </div>
+
+            <div class="tab-pane" id="hosts-tab">
+                <div class="table-container scrollable-content">
+                  <table class="results-table" id="hosts-table">
+                    <thead>
+                      <tr>
+                        <th>Host</th>
+                        <th>Status</th>
+                        <th>OS</th>
+                        <th>Open Ports</th>
+                        <th>Latency</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="hosts-body">
+                        <tr><td colspan="6" class="placeholder">No host results yet.</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+
+             <div class="tab-pane" id="ports-tab">
+                <div class="table-container scrollable-content">
+                  <table class="results-table" id="ports-table">
+                    <thead>
+                      <tr>
+                        <th>Host</th>
+                        <th>Port</th>
+                        <th>Protocol</th>
+                        <th>State</th>
+                        <th>Service</th>
+                        <th>Version</th>
+                      </tr>
+                    </thead>
+                    <tbody id="ports-body">
+                        <tr><td colspan="6" class="placeholder">No port results yet.</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+
+            <div class="tab-pane" id="services-tab">
+                 <div class="table-container scrollable-content">
+                  <table class="results-table" id="services-table">
+                    <thead>
+                      <tr>
+                        <th>Service</th>
+                        <th>Ports</th>
+                        <th>Protocol</th>
+                        <th>Version</th>
+                        <th>Hosts</th>
+                        <th>Info</th>
+                      </tr>
+                    </thead>
+                    <tbody id="services-body">
+                        <tr><td colspan="6" class="placeholder">No service results yet.</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+
+             <div class="tab-pane" id="vulnerabilities-tab">
+                 <div class="table-container scrollable-content">
+                  <table class="results-table" id="vulnerabilities-table">
+                    <thead>
+                      <tr>
+                        <th>Host</th>
+                        <th>Port</th>
+                        <th>Service</th>
+                        <th>Vulnerability</th>
+                        <th>Severity</th>
+                        <th>Details</th>
+                      </tr>
+                    </thead>
+                    <tbody id="vulnerabilities-body">
+                         <tr><td colspan="6" class="placeholder">No vulnerability results yet.</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+
+            <div class="tab-pane" id="raw-tab">
+                <div class="raw-container scrollable-content">
+                  <pre id="raw-output" class="raw-output">
+                      <p class="placeholder">Raw Nmap output will appear here.</p>
+                  </pre>
+                </div>
+            </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="nmap-scanner.js"></script>
+  </body>
+</html>

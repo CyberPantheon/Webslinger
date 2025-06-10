@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Burp Suite Community Edition</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; frame-ancestors 'none';">
+    <link rel="stylesheet" href="burpsuite.css">
+   <link rel="stylesheet" href="./fonts/fontawesome/css/all.min.css">
+</head>
+<body>
+    <div class="burp-container">
+        <div class="burp-titlebar">
+            <span class="burp-title"><i class="fas fa-flask"></i> Burp Suite Community Edition</span>
+            <div class="burp-controls">
+                <button id="burp-minimize" title="Minimize"><i class="fas fa-minus"></i></button>
+                <button id="burp-close" title="Close"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+        <div class="burp-content">
+            <div class="burp-info">
+                <i class="fas fa-spinner fa-spin"></i> Launching Burp Suite Community Edition...<br>
+                If Burp Suite does not appear, check your installation in the BurpSuiteCommunity folder.
+            </div>
+        </div>
+    </div>
+    <script src="burpsuite.js"></script>
+</body>
+</html>

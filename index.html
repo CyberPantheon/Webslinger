@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Webslinger | Cyber Pantheon</title>      <link rel="stylesheet" href="styles.css">   
+    <link rel="stylesheet" href="./fonts/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="api-key.css">
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; frame-ancestors 'none';"> -->
+</head>
+<body>
+    <div id="background-rotator"></div>
+    <div class="particles-container" id="particles-container"></div>
+    
+    <div class="tab-bar">
+        <div class="tabs-container" id="tabs-container">
+            <!-- Tabs will be dynamically added here -->
+        </div>
+        <button id="new-tab-btn" class="new-tab-btn" title="New Tab">+</button>
+    </div>
+
+    <div class="toolbar">
+        <div class="nav-controls">
+            <button id="back-btn" class="nav-btn" title="Back" disabled>
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <button id="forward-btn" class="nav-btn" title="Forward" disabled>
+                <i class="fas fa-arrow-right"></i>
+            </button>
+            <button id="reload-btn" class="nav-btn" title="Reload" disabled>
+                <i class="fas fa-sync-alt"></i>
+            </button>
+            <button id="home-btn" class="nav-btn" title="Home">
+                <i class="fas fa-home"></i>
+            </button>
+            <button id="arsenal-tool-btn" class="nav-btn" title="Open Arsenal" style="position:relative;">
+                <i class="fas fa-toolbox"></i>
+                <span class="toolbar-tooltip">Open Arsenal (Ctrl+X)</span>
+            </button>
+            <button id="proxy-tool-btn" class="nav-btn" title="Charlotte">
+                <i class="fas fa-robot"></i>
+            </button>
+            <button id="burp-proxy-toggle-btn" class="nav-btn" title="Toggle Burp Proxy" style="position:relative;">
+                <i class="fas fa-random"></i>
+                <span class="toolbar-tooltip">Toggle Burp Proxy (Ctrl+P)</span>
+            </button>
+        </div>
+
+        <form id="search-form" class="search-container">
+            <input type="text" id="search-input" placeholder="Search or enter address..." class="search-input">
+            <button type="submit" class="search-button" title="Search">
+                <i class="fas fa-search"></i>
+            </button>
+        </form>
+    </div>
+
+    <div class="webview-container" id="webview-container">
+        <div id="home-content" class="active">
+            <div class="welcome-container">
+                <h1 class="logo">Webslinger</h1>
+                <p class="tagline">Softly softly form the shadows</p>
+                <div class="widgets-container">
+                    <div class="widget">
+                        <div class="widget-header">
+                            <i class="fas fa-shield-alt"></i>
+                            <h3 class="widget-title">Anonymity and Skill</h3>
+                        </div>
+                        <div class="widget-content">
+                            <p>Made by the CyberGhost<br>Tools to aid your hunt in the web<br>All in one place<br><br>Press ctrl X to see your arsenal</p>
+                        </div>
+                    </div>
+                    <div class="widget">
+                        <div class="widget-header">
+                            <i class="fas fa-bug"></i>
+                            <h3 class="widget-title">Bug Bounty Platforms</h3>
+                        </div>
+                        <div class="widget-content">
+                            <div class="quick-access">
+                                <div class="access-card" onclick="handleQuickAccessClick('https://hackerone.com/')">
+                                    <div class="access-icon"><i class="fab fa-hacker-news"></i></div>
+                                    <div class="access-name">HackerOne</div>
+                                </div>
+                                <div class="access-card" onclick="handleQuickAccessClick('https://bugcrowd.com/')">
+                                    <div class="access-icon"><i class="fas fa-crow"></i></div>
+                                    <div class="access-name">Bugcrowd</div>
+                                </div>
+                                <div class="access-card" onclick="handleQuickAccessClick('https://intigriti.com/')">
+                                    <div class="access-icon"><i class="fas fa-shield-virus"></i></div>
+                                    <div class="access-name">Intigriti</div>
+                                </div>
+                                <div class="access-card" onclick="handleQuickAccessClick('https://yeswehack.com/')">
+                                    <div class="access-icon"><i class="fas fa-hat-wizard"></i></div>
+                                    <div class="access-name">YesWeHack</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="proxy-popup" class="proxy-popup glass-effect hidden chatbot-popup">
+        <div class="proxy-popup-header">
+            <h3>Charlotte AI </h3>
+            <div style="display:flex;gap:8px;">
+                <button id="api-key-toggle-btn" class="popup-api-key-toggle-btn" title="Show/Hide API Key" style="font-size:1.2em;">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <button id="proxy-popup-fullscreen-btn" class="popup-fullscreen-btn" title="Toggle Fullscreen"><i class="fas fa-expand"></i></button>
+                <button id="proxy-popup-close-btn" class="popup-close-btn">&times;</button>
+            </div>
+        </div>
+        <div id="api-key-section" class="api-key-section hidden">
+            <div class="api-key-input-container">
+                <input type="password" id="gemini-api-key" placeholder="Enter your Gemini API Key" class="api-key-input">
+                <button id="save-api-key" class="save-api-key-btn"><i class="fas fa-save"></i> Save Key</button>
+            </div>
+            <div id="api-key-status" class="api-key-status"></div>
+        </div>
+        <div class="proxy-popup-tabs">
+            <button class="popup-tab-btn active" data-tab="ai-tab">AI</button>
+            <button class="popup-tab-btn" data-tab="code-tab">Charlotte's Terminal</button>
+        </div>
+        <div class="proxy-popup-content chatbot-content">
+            <div id="ai-tab" class="popup-tab active">
+                <div id="chat-history" class="chat-history"></div>
+                <div class="chat-input-row">
+                    <textarea id="chat-input" placeholder="Type your message..." autocomplete="off" rows="1"></textarea>
+                    <button id="chat-send-btn"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+            <div id="code-tab" class="popup-tab">
+                <div class="code-exec-section">
+                    <label for="code-input" class="code-label">Charlotte's terminal (JS):</label>
+                    <textarea id="code-input" class="code-input" placeholder="// Run charlotte's scripts here" rows="6"></textarea>
+                    <div class="code-exec-actions">
+                        <button id="code-run-btn"><i class="fas fa-play"></i> Run</button>
+                        <button id="code-copy-btn"><i class="fas fa-copy"></i> Copy</button>
+                    </div>
+                    <label for="code-output" class="code-label">Output:</label>
+                    <pre id="code-output" class="code-output"></pre>
+                    <button id="code-output-copy-btn" class="copy-btn" title="Copy Output"><i class="fas fa-copy"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="proxy-status-popup" style="display:none;position:fixed;top:30px;left:50%;transform:translateX(-50%);z-index:9999;padding:16px 32px;background:#222;color:#fff;border-radius:8px;box-shadow:0 2px 8px #0008;font-size:1.1em;"></div>
+    <script src="script.js"></script>
+    <script>
+        // Arsenal button click handler
+        document.getElementById('arsenal-tool-btn').addEventListener('click', function() {
+            if (window.require) {
+                window.require('electron').ipcRenderer.send('open-arsenal');
+            }
+        });
+
+        // Background rotator
+        (function setupBackgroundRotator() {
+            const backgrounds = [
+                'linear-gradient(135deg, #1e1e2e, #303446)',
+                'linear-gradient(135deg, #1a1b26, #24283b)',
+                'linear-gradient(135deg, #282a36, #44475a)',
+                'linear-gradient(135deg, #191724, #26233a)'
+            ];
+            
+            const rotator = document.getElementById('background-rotator');
+            let currentBg = 0;
+            
+            // Create background elements
+            backgrounds.forEach((bg, index) => {
+                const bgDiv = document.createElement('div');
+                bgDiv.style.position = 'absolute';
+                bgDiv.style.top = '0';
+                bgDiv.style.left = '0';
+                bgDiv.style.width = '100%';
+                bgDiv.style.height = '100%';
+                bgDiv.style.background = bg;
+                bgDiv.style.opacity = index === 0 ? '1' : '0';
+                bgDiv.style.transition = 'opacity 1.5s ease-in-out';
+                bgDiv.className = index === 0 ? 'active' : '';
+                rotator.appendChild(bgDiv);
+            });
+            
+            // Rotate backgrounds
+            setInterval(() => {
+                const bgElements = rotator.querySelectorAll('div');
+                bgElements[currentBg].classList.remove('active');
+                bgElements[currentBg].style.opacity = '0';
+                
+                currentBg = (currentBg + 1) % backgrounds.length;
+                
+                bgElements[currentBg].classList.add('active');
+                bgElements[currentBg].style.opacity = '1';
+            }, 10000);
+        })();
+
+        // Particles animation
+        (function setupParticles() {
+            const container = document.getElementById('particles-container');
+            const particleCount = 20;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random size between 2px and 6px
+                const size = Math.random() * 4 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Random opacity
+                particle.style.opacity = `${Math.random() * 0.3 + 0.1}`;
+                
+                // Random animation duration
+                const duration = Math.random() * 10 + 10;
+                particle.style.animationDuration = `${duration}s`;
+                
+                // Random animation delay
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                container.appendChild(particle);
+            }
+        })();
+    </script>
+</body>
+</html>

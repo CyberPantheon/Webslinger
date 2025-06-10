@@ -1,0 +1,54 @@
+/*
+Burp Suite Community Edition Tool Styles
+---------------------------------------
+*/
+body {
+    background: #181c20;
+    color: #e0e0e0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.burp-container {
+    max-width: 900px;
+    margin: 40px auto;
+    background: #23272b;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px #000a;
+    padding: 0;
+}
+.burp-titlebar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #1a1d20;
+    border-radius: 12px 12px 0 0;
+    padding: 16px 24px 12px 24px;
+}
+.burp-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ff9800;
+    letter-spacing: 1px;
+}
+.burp-controls button {
+    background: none;
+    border: none;
+    color: #e0e0e0;
+    font-size: 1.2rem;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.burp-controls button:hover {
+    color: #ff9800;
+}
+.burp-content {
+    padding: 40px 24px 32px 24px;
+    text-align: center;
+}
+.burp-info {
+    font-size: 1.1rem;
+    color: #aaa;
+    margin-top: 20px;
+}
